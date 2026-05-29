@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    color: white;
     padding: 20px;
 }
 
@@ -90,6 +91,7 @@ body {
 
 .nome-produto {
     background-color: rgb(10, 76, 138);
+
     padding: 4px 8px;
     border-radius: 5px;
     font-weight: bold;
