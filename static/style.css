@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+}
+
+
+.editar {
+    background-color: blue;
+    
+}
+
+.editar:hover {
+    background-color: darkblue;
+}
+
+
+.excluir {
+    background-color: red;
+    
+}
+
+.excluir:hover {
+    background-color: darkred;
+}
+
+.erro {
+    color: red;
+    font-weight: bold;
+}
+
+
+.adicionar {
+    background-color: green;
+
+}
+.adicionar:hover {
+    background-color: darkgreen;
+}
+
+.buscar {
+    background-color: blue;
+}
+
+.buscar:hover {
+    background-color: darkblue;
+}
+
+.lista-produtos {
+    border: 2px solid gray;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 10px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.produto {
+    margin-bottom: 12px;
+    padding: 8px;
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.id-produto {
+    background-color: lightgray;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.nome-produto {
+    background-color: rgb(10, 76, 138);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 200px;
+}
+.preco-produto {
+    background-color: rgb(6, 116, 24);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 120px;
+}
+.quan-produto {
+    background-color: rgb(10, 76, 138);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 150px;
+}
+
+.topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-produto {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.voltar {
+    background-color: gray;
+}
+
+.voltar:hover {
+    background-color: darkgray;
+}
+.salvar {
+    background-color: green;
+}
+.salvar:hover {
+    background-color: darkgreen;
+}

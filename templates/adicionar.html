@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar Produto</title>
+</head>
+
+<body>
+
+    <h1>Adicionar Produto</h1>
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+
+    {% if mensagens %}
+
+        {% for categoria, mensagem in mensagens %}
+
+            <p>{{ mensagem }}</p>
+
+        {% endfor %}
+
+    {% endif %}
+
+    {% endwith %}
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="nome"
+            placeholder="Nome"
+        >
+
+        <br><br>
+
+        <input
+            type="number"
+            step="0.01"
+            name="preco"
+            placeholder="Preço"
+        >
+
+        <br><br>
+
+        <input
+            type="number"
+            name="quantidade"
+            placeholder="Quantidade"
+        >
+
+        <br><br>
+
+        <button type="submit">
+            Adicionar
+        </button>
+        
+        <button type="submit">
+            <a href="/">Voltar</a>
+        </button>
+
+    </form>
+
+</body>
+
+</html>

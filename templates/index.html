@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Estoque</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    
+
+    <h1>Sistema de Estoque</h1>
+    
+       
+    <div class="topo">
+
+    <form method="GET">
+        <input 
+            style="padding: 8px; border-radius: 5px;"
+            type="text" name="busca" placeholder="Buscar produto">
+
+        <button type="submit" class="btn buscar">
+            🔍
+        </button>
+    </form>
+
+    <a href="/adicionar" class="btn adicionar">
+        Adicionar
+    </a>
+
+    </div>
+
+
+    <div class="lista-produtos">
+       {% for produto in produtos %}
+
+        <div class="produto">
+            <div class="info-produto">
+                <span class="id-produto">
+                    {{ loop.index }}
+                </span>
+                <span class="nome-produto">
+                    {{ produto[1] }}
+                </span>
+                <span class="preco-produto">
+                    R$ {{ "%.2f"|format(produto[2]) }}
+                </span>
+                <span class="quan-produto">
+                    Quantidades: {{ produto[3] }}
+                </span>
+            </div>
+
+            <div class="acoes">
+
+            <a href="/editar/{{ produto[0] }}" class="btn editar">
+                Editar
+            </a>
+
+            <a 
+                href="/deletar/{{ produto[0] }}" 
+                class="btn excluir"
+                onclick="return confirm('Tem certeza que deseja excluir este produto?')">
+                
+                Excluir
+
+            </a>
+
+        </div>    
+            
+        
+        </div>
+
+       {% endfor %}
+        </div>
+
+
+</body>
+</html>
