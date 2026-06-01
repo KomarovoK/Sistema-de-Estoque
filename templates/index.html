@@ -1,79 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
 
+<head>
     <meta charset="UTF-8">
     <title>Estoque</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
+
 <body>
     
-
-    <h1>Sistema de Estoque</h1>
-    
-       
+    <h1 style="font-family: fancy">Sistema de Estoque</h1>
+      
     <div class="topo">
 
-    <form method="GET">
-        <input 
-            style="padding: 8px; border-radius: 5px;"
-            type="text" name="busca" placeholder="Buscar produto">
+        <form method="GET">
+            <input
+                style="padding: 8px; border-radius: 5px;"
+                type="text"
+                name="busca"
+                placeholder="Buscar produto">
 
-        <button type="submit" class="btn buscar">
-            🔍
-        </button>
-    </form>
+            <button type="submit" class="btn buscar">
+                🔍
+            </button>
+        </form>
 
-    <a href="/adicionar" class="btn adicionar">
-        Adicionar
-    </a>
+        <a href="/adicionar" class="btn adicionar">
+            Adicionar
+        </a>
 
     </div>
 
-
     <div class="lista-produtos">
-       {% for produto in produtos %}
 
-        <div class="produto">
-            <div class="info-produto">
-                <span class="id-produto">
-                    {{ loop.index }}
-                </span>
-                <span class="nome-produto">
-                    {{ produto[1] }}
-                </span>
-                <span class="preco-produto">
-                    R$ {{ "%.2f"|format(produto[2]) }}
-                </span>
-                <span class="quan-produto">
-                    Quantidades: {{ produto[3] }}
-                </span>
+        <div class="cabecalho-produtos" >
+            <div>Nome</div>
+            <div>Preço</div>
+            <div>Quantidade</div>
+            <div>Opções</div>
+        </div>
+
+        {% for produto in produtos %}
+
+        <div class="linha-produto">
+
+            <div class="nome-produto">
+                {{ produto[1] }}
             </div>
 
-            <div class="acoes">
+            <div class="preco-produto">
+                R$ {{ "%.2f"|format(produto[2]) }}
+            </div>
 
-            <a href="/editar/{{ produto[0] }}" class="btn editar">
-                Editar
-            </a>
+            <div class="quan-produto">
+                {{ produto[3] }}
+            </div>
 
-            <a 
-                href="/deletar/{{ produto[0] }}" 
-                class="btn excluir"
-                onclick="return confirm('Tem certeza que deseja excluir este produto?')">
-                
-                Excluir
+            <div class="opcoes-produto">
 
-            </a>
+                <a href="/editar/{{ produto[0] }}" class="btn editar">
+                    Editar
+                </a>
 
-        </div>    
-            
-        
+                <a
+                    href="/deletar/{{ produto[0] }}"
+                    class="btn excluir"
+                    onclick="return confirm('Tem certeza que deseja excluir este produto?')">
+
+                    Excluir
+
+                </a>
+
+            </div>
+
         </div>
 
-       {% endfor %}
-        </div>
+        {% endfor %}
 
+    </div>
 
 </body>
+
 </html>
