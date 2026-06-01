@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     color: white;
     padding: 20px;
+    background-color: #34495e;
 }
 
 .btn {
@@ -16,20 +17,16 @@ body {
     border: none;
 }
 
-
 .editar {
-    background-color: blue;
-    
+    background-color: gray;
 }
 
 .editar:hover {
-    background-color: darkblue;
+    background-color: darkgray;
 }
 
-
 .excluir {
-    background-color: red;
-    
+    background-color: rgba(255, 0, 0, 0.616);
 }
 
 .excluir:hover {
@@ -41,87 +38,87 @@ body {
     font-weight: bold;
 }
 
-
 .adicionar {
-    background-color: green;
-
+    background-color: rgba(22, 85, 158, 0.575);
 }
+
 .adicionar:hover {
-    background-color: darkgreen;
+    background-color: rgb(17, 58, 105);
 }
 
 .buscar {
-    background-color: blue;
+    background-color: gray;
 }
 
 .buscar:hover {
-    background-color: darkblue;
+    background-color: darkgray;
 }
 
 .lista-produtos {
-    border: 2px solid gray;
-    padding: 15px;
+    border: 4px solid gray;
+    padding: 0px;
     margin-top: 20px;
-    border-radius: 10px;
-    height: 300px;
+    height: 600px;
+    width: 60%;
     overflow-y: auto;
-}
-
-.produto {
-    margin-bottom: 12px;
-    padding: 8px;
-    border-bottom: 1px solid lightgray;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-}
-
-.acoes {
-    display: flex;
-    gap: 10px;
-}
-
-.id-produto {
-    background-color: lightgray;
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.nome-produto {
-    background-color: rgb(10, 76, 138);
-
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-    width: 200px;
-}
-.preco-produto {
-    background-color: rgb(6, 116, 24);
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-    width: 120px;
-}
-.quan-produto {
-    background-color: rgb(10, 76, 138);
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: bold;
-    width: 150px;
+    margin: 20px auto;
 }
 
 .topo {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 10px;
 }
 
-.info-produto {
-    display: flex;
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.cabecalho-produtos,
+.linha-produto {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1.2fr;
+    gap: 0;
     align-items: center;
-    gap: 20px;
+    border-bottom: 2px solid gray;
+
+}
+
+.cabecalho-produtos {
+    background-color: #2c3e50;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cabecalho-produtos > div,
+.linha-produto > div {
+    padding: 10px;
+    border-right: 2px solid gray;
+}
+
+.cabecalho-produtos > div:last-child,
+.linha-produto > div:last-child {
+    border-right: none;
+}
+
+.linha-produto {
+    border-bottom: 1px solid gray;
+}
+
+.opcoes-produto {
+    display: flex;
+    gap: 10px;
+}
+
+.nome-produto,
+.preco-produto,
+.quan-produto {
+    padding: 10px;
+    border-radius: 0;
 }
 
 .voltar {
@@ -131,9 +128,11 @@ body {
 .voltar:hover {
     background-color: darkgray;
 }
+
 .salvar {
     background-color: green;
 }
+
 .salvar:hover {
     background-color: darkgreen;
 }
