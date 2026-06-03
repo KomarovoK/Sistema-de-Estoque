@@ -3,7 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    
     <title>Adicionar Produto</title>
+    
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
 </head>
 
 <body>
@@ -26,6 +32,7 @@
     <form method="POST">
 
         <input
+            style="padding: 8px; border-radius: 5px;"
             type="text"
             name="nome"
             placeholder="Nome"
@@ -34,6 +41,7 @@
         <br><br>
 
         <input
+            style="padding: 8px; border-radius: 5px;"
             type="number"
             step="0.01"
             name="preco"
@@ -43,6 +51,7 @@
         <br><br>
 
         <input
+            style="padding: 8px; border-radius: 5px;"
             type="number"
             name="quantidade"
             placeholder="Quantidade"
@@ -50,13 +59,13 @@
 
         <br><br>
 
-        <button type="submit">
+        <button type="submit" class="btn adicionar">
             Adicionar
         </button>
         
-        <button type="submit">
-            <a href="/">Voltar</a>
-        </button>
+        
+        <a href="/" class="btn voltar">Voltar</a>
+        
 
     </form>
 
