@@ -7,6 +7,9 @@ cursor = conexao.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS produtos (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL UNIQUE, preco REAL NOT NULL, quantidade INTEGER NOT NULL)''')
 
+cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, usuario TEXT NOT NULL UNIQUE, senha TEXT NOT NULL)''')
+
 class Produto:
     def __init__(self, nome, preco, quantidade):
         self.nome = nome
@@ -86,29 +89,29 @@ def validar_produto():
     nome = request.form['nome'].strip()
 
     if not nome:
-        flash('O campo nome é obrigatório.', 'error')
+        flash('O campo nome é obrigatório.', 'erro')
         return None
 
     try:
         preco = float(request.form['preco'])
 
         if preco <= 0:
-            flash('O campo preço deve ser positivo.', 'error')
+            flash('O campo preço deve ser positivo.', 'erro')
             return None
 
     except (KeyError, ValueError):
-        flash('Preço inválido.', 'error')
+        flash('Preço inválido.', 'erro')
         return None
 
     try:
         quantidade = int(request.form['quantidade'])
 
         if quantidade < 0:
-            flash('Quantidade inválida.', 'error')
+            flash('Quantidade inválida.', 'erro')
             return None
 
     except (KeyError, ValueError):
-        flash('Quantidade inválida.', 'error')
+        flash('Quantidade inválida.', 'erro')
         return None
 
     return nome, preco, quantidade

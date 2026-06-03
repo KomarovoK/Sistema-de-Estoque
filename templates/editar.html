@@ -4,14 +4,24 @@
 <head>
     
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Editar Produto</title>
     
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
 </head>
 
 <body>
 
     <h1>Editar Produto</h1>
+    
+    {% with mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <form method="POST">
 
@@ -46,9 +56,7 @@
 
         <br><br>
 
-        <button type="submit" class="btn adicionar">
-            Salvar
-        </button>
+        <button type="submit" class="btn adicionar">Salvar</button>
         
         <a href="/" class="btn voltar">Voltar</a>
 

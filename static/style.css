@@ -34,7 +34,12 @@ body {
 }
 
 .erro {
-    color: red;
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px auto;
+    width: fit-content;
     font-weight: bold;
 }
 
@@ -135,4 +140,24 @@ h1 {
 
 .salvar:hover {
     background-color: darkgreen;
+}
+
+.certo {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px auto;
+    width: fit-content;
+    font-weight: bold;
+}
+
+.usuario-logado {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 2px solid gray;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: bold;
 }

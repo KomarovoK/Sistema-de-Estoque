@@ -3,14 +3,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Estoque</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Estoque</title>
+    
 </head>
 
 <body>
     
     <h1 style="font-family: fancy; font-size: 45px;">Sistema de Estoque</h1>
-      
+    
+    <div class="usuario-logado">{{ session['usuario'] }}!</div>
+    
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %} 
+    
     <div class="topo">
 
         <form method="GET">
@@ -24,6 +36,7 @@
         </form>
 
         <a href="/adicionar" class="btn adicionar">Adicionar</a>
+        <a href="/logout" class="btn excluir">Sair</a>
 
 
     </div>
@@ -41,33 +54,20 @@
 
         <div class="linha-produto">
 
-            <div class="nome-produto">
-                {{ produto[1] }}
-            </div>
+            <div class="nome-produto">{{ produto[1] }}</div>
 
-            <div class="preco-produto">
-                R$ {{ "%.2f"|format(produto[2]) }}
-            </div>
+            <div class="preco-produto">R$ {{ "%.2f"|format(produto[2]) }}</div>
 
-            <div class="quan-produto">
-                {{ produto[3] }}
-            </div>
+            <div class="quan-produto">{{ produto[3] }}</div>
 
             <div class="opcoes-produto">
-
-                <a href="/editar/{{ produto[0] }}" class="btn editar">
-                    Editar
-                </a>
+                <a href="/editar/{{ produto[0] }}" class="btn editar">Editar</a>
 
                 <a
                     href="/deletar/{{ produto[0] }}"
                     class="btn excluir"
-                    onclick="return confirm('Tem certeza que deseja excluir este produto?')">
-
-                    Excluir
-
+                    onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir
                 </a>
-
             </div>
 
         </div>

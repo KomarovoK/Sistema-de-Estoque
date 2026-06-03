@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login</title>
+
+</head>
+<body>
+    
+    <h1>Login</h1>
+    
+    {% with mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}    
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="topo" style="margin-top: 120px; margin-left: 20px;">
+
+        <form method="POST">
+
+            <input
+                style="padding: 8px; border-radius: 5px;"
+                type="text"
+                name="usuario"
+                placeholder="Usuario"
+                required>
+        
+            <br><br>
+        
+            <input
+                style="padding: 8px; border-radius: 5px;"
+                type="password"
+                name="senha"
+                placeholder="Senha"
+                required>
+        
+            <br><br>
+            <div style="margin-left: -12px;">
+            <button type="submit" class="btn adicionar">Entrar</button>
+            <a href="/cadastro" class="btn voltar">Cadastre-se</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

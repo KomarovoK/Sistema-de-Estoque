@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
     <title>Adicionar Produto</title>
     
     
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 
 </head>
@@ -15,18 +16,13 @@
 <body>
 
     <h1>Adicionar Produto</h1>
+    
     {% with mensagens = get_flashed_messages(with_categories=true) %}
-
-    {% if mensagens %}
-
-        {% for categoria, mensagem in mensagens %}
-
-            <p>{{ mensagem }}</p>
-
-        {% endfor %}
-
-    {% endif %}
-
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
 
     <form method="POST">
@@ -59,11 +55,8 @@
 
         <br><br>
 
-        <button type="submit" class="btn adicionar">
-            Adicionar
-        </button>
-        
-        
+        <button type="submit" class="btn adicionar">Adicionar</button>
+         
         <a href="/" class="btn voltar">Voltar</a>
         
 
