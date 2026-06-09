@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, flash, session
 from produto import Produto, validar_produto
 import sqlite3
@@ -13,7 +14,7 @@ def index():
         return redirect('/login')
 
     busca = request.args.get("busca")
-
+    
     conexao = sqlite3.connect("database.db")
     cursor = conexao.cursor()
 
@@ -117,18 +118,20 @@ def login():
         cursor = conexao.cursor()
 
         cursor.execute(
-            '''
-            SELECT * FROM usuarios
-            WHERE usuario = ? AND senha = ?
-            ''',
-            (usuario, senha)
+        '''
+        SELECT * FROM usuarios
+        WHERE usuario = ?
+        ''',
+        (usuario,)
         )
+        
         usuario_encontrado = cursor.fetchone()
         
-        if usuario_encontrado:
+        if usuario_encontrado and check_password_hash(usuario_encontrado[2], senha):
             
+            conexao.close()
+
             session['usuario'] = usuario
-            
             return redirect('/')
 
         flash('Usuário ou senha incorretos', 'erro')
@@ -153,9 +156,10 @@ def cadastro():
         cursor = conexao.cursor()
 
         try:
+            senha_hash = generate_password_hash(senha)
             cursor.execute(
                 "INSERT INTO usuarios (usuario, senha) VALUES (?, ?)",
-                (usuario, senha)
+                (usuario, senha_hash)
             )
 
             conexao.commit()
@@ -171,6 +175,7 @@ def cadastro():
             conexao.close()
 
     return render_template('cadastro.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
