@@ -1,5 +1,7 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, flash, session
 from produto import Produto, validar_produto
+from cliente import Cliente
 import sqlite3
 
 app = Flask(__name__)
@@ -13,7 +15,7 @@ def index():
         return redirect('/login')
 
     busca = request.args.get("busca")
-
+    
     conexao = sqlite3.connect("database.db")
     cursor = conexao.cursor()
 
@@ -37,6 +39,9 @@ def index():
 
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
+    
+    if 'usuario' not in session:
+        return redirect('/login')
 
     if request.method == 'POST':
 
@@ -49,10 +54,11 @@ def adicionar():
 
         produto = Produto(nome, preco, quantidade)
 
-        produto.cadastrar_produtos()
+        if produto.cadastrar_produtos():
+            flash('Produto cadastrado com sucesso!', 'certo')
+        else:
+            flash('Produto já cadastrado!', 'erro')
         
-        flash('Produto cadastrado com sucesso!', 'certo')
-
         return redirect('/')
 
     return render_template('adicionar.html')
@@ -106,6 +112,7 @@ def editar(id):
         produto=produto
     )
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -117,23 +124,26 @@ def login():
         cursor = conexao.cursor()
 
         cursor.execute(
-            '''
-            SELECT * FROM usuarios
-            WHERE usuario = ? AND senha = ?
-            ''',
-            (usuario, senha)
+        '''
+        SELECT * FROM usuarios
+        WHERE usuario = ?
+        ''',
+        (usuario,)
         )
+        
         usuario_encontrado = cursor.fetchone()
         
-        if usuario_encontrado:
+        if usuario_encontrado and check_password_hash(usuario_encontrado[2], senha):
             
+            conexao.close()
+
             session['usuario'] = usuario
-            
             return redirect('/')
 
         flash('Usuário ou senha incorretos', 'erro')
         
     return render_template('login.html')
+
 
 @app.route('/logout')
 def logout():
@@ -141,6 +151,7 @@ def logout():
     session.pop('usuario', None)
     
     return redirect('/login')
+
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -153,9 +164,10 @@ def cadastro():
         cursor = conexao.cursor()
 
         try:
+            senha_hash = generate_password_hash(senha)
             cursor.execute(
                 "INSERT INTO usuarios (usuario, senha) VALUES (?, ?)",
-                (usuario, senha)
+                (usuario, senha_hash)
             )
 
             conexao.commit()
@@ -171,6 +183,100 @@ def cadastro():
             conexao.close()
 
     return render_template('cadastro.html')
+
+
+@app.route('/adicionar_cliente', methods=['GET', 'POST'])
+def adicionar_cliente():
+    if 'usuario' not in session:
+        return redirect('/login')
+    
+    if request.method == 'POST':
+
+        nome = request.form['nome']
+        telefone = request.form['telefone']
+
+        cliente = Cliente(nome, telefone)
+
+        if cliente.cadastrar_cliente():
+            flash('Cliente cadastrado com sucesso!', 'certo')
+        else:
+            flash('Cliente já cadastrado!', 'erro')
+
+        return redirect('/clientes')
+
+    return render_template('adicionar_cliente.html')
+
+
+@app.route('/clientes')
+def clientes():
+
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    busca = request.args.get('busca')
+
+    conexao = sqlite3.connect('database.db')
+    cursor = conexao.cursor()
+
+    if busca:
+        cursor.execute(
+            "SELECT * FROM clientes WHERE nome LIKE ?",
+            ('%' + busca + '%',)
+        )
+    else:
+        cursor.execute("SELECT * FROM clientes")
+
+    clientes = cursor.fetchall()
+
+    conexao.close()
+
+    return render_template(
+        'clientes.html',
+        clientes=clientes
+        )
+
+@app.route('/deletar_cliente/<int:id_cliente>')
+def deletar_cliente(id_cliente):
+
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    cliente = Cliente('', '')
+    cliente.deletar_cliente(id_cliente)
+
+    flash('Cliente removido com sucesso!', 'certo')
+
+    return redirect('/clientes')
+
+
+@app.route('/editar_cliente/<int:id_cliente>', methods=['GET', 'POST'])
+def editar_cliente(id_cliente):
+
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    cliente = Cliente('', '')
+
+    if request.method == 'POST':
+
+        nome = request.form['nome']
+        telefone = request.form['telefone']
+
+        cliente = Cliente(nome, telefone)
+
+        if cliente.editar_cliente(id_cliente):
+            flash('Cliente atualizado com sucesso!', 'certo')
+        else:
+            flash('Telefone já cadastrado!', 'erro')
+
+        return redirect('/clientes')
+
+    dados_cliente = cliente.buscar_cliente(id_cliente)
+
+    return render_template(
+        'editar_cliente.html',
+        cliente=dados_cliente
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

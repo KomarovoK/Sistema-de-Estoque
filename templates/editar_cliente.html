@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Editar Cliente</title>
+
+</head>
+
+<body>
+
+    <h1>Editar Cliente</h1>
+    
+    {% with mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="topo" style="margin-top: 120px;">
+        
+        <form method="POST">
+
+            <input
+                style="padding: 8px; border-radius: 5px; margin-left: 30px;"
+                type="text"
+                name="nome"
+                value="{{ cliente[1] }}"
+                required
+            >
+
+            <br><br>
+
+            <input
+                style="padding: 8px; border-radius: 5px; margin-left: 30px;"
+                type="text"
+                name="telefone"
+                value="{{ cliente[2] }}"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit" class="btn adicionar">Salvar Alterações</button>
+            <a href="/clientes" class="btn voltar">Voltar</a>
+        </form>
+    
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <title>Adicionar Cliente</title>
+    
+</head>
+
+<body>
+
+    <h1>Adicionar Cliente</h1>
+    
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="topo" style="margin-top: 120px;">
+
+        <form method="POST">
+
+            <input
+                style="padding: 8px; border-radius: 5px;"
+                type="text"
+                name="nome"
+                placeholder="Nome"
+            >
+
+            <br><br>
+
+            <input
+            style="padding: 8px; border-radius: 5px;"
+            type="text"
+            name="telefone"
+            placeholder="Telefone"
+            required
+            >
+
+            <br><br>
+
+            <button type="submit" class="btn adicionar">Adicionar</button>
+            <a href="/clientes" class="btn voltar">Voltar</a>
+        
+
+        </form>
+        
+    </div>
+
+</body>
+
+</html>

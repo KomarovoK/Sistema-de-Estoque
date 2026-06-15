@@ -5,10 +5,15 @@ conexao = sqlite3.connect('database.db', check_same_thread=False)
 cursor = conexao.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS produtos (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL UNIQUE, preco REAL NOT NULL, quantidade INTEGER NOT NULL)''')
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL UNIQUE, 
+    preco REAL NOT NULL,
+    quantidade INTEGER NOT NULL)''')
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, usuario TEXT NOT NULL UNIQUE, senha TEXT NOT NULL)''')
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario TEXT NOT NULL UNIQUE, 
+    senha TEXT NOT NULL)''')
 
 class Produto:
     def __init__(self, nome, preco, quantidade):
@@ -21,27 +26,27 @@ class Produto:
         cursor.execute(
         'SELECT * FROM produtos WHERE nome = ?',
         (self.nome,)
-    )
+        )
 
         produto = cursor.fetchone()
 
         if produto:
-            print('Produto já cadastrado!')
+            return False
 
-        else:
-            cursor.execute(
-            '''
-            INSERT INTO produtos (
-                nome,
-                preco,
-                quantidade
-            )
-            VALUES (?, ?, ?)
-            ''',
-            (self.nome, self.preco, self.quantidade)
+        cursor.execute(
+        '''
+        INSERT INTO produtos (
+            nome,
+            preco,
+            quantidade
         )
-            
-            conexao.commit()
+        VALUES (?, ?, ?)
+        ''',
+        (self.nome, self.preco, self.quantidade)
+        )
+
+        conexao.commit()
+        return True
                 
      
     def listar_produtos(self):

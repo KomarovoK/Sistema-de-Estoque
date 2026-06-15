@@ -24,7 +24,9 @@
     {% endwith %} 
     
     <div class="topo">
-
+        
+        <a href="/clientes" class="btn clientes">Clientes</a>
+        
         <form method="GET">
             <input
                 style="padding: 10px; border-radius: 5px;"
@@ -34,7 +36,6 @@
 
             <button type="submit" class="btn buscar">🔍</button>
         </form>
-
         <a href="/adicionar" class="btn adicionar">Adicionar</a>
         <a href="/logout" class="btn excluir">Sair</a>
 
@@ -63,11 +64,7 @@
             <div class="opcoes-produto">
                 <a href="/editar/{{ produto[0] }}" class="btn editar">Editar</a>
 
-                <a
-                    href="/deletar/{{ produto[0] }}"
-                    class="btn excluir"
-                    onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir
-                </a>
+                <a href="/deletar/{{ produto[0] }}" class="btn excluir" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
             </div>
 
         </div>

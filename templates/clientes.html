@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <title>Clientes</title>
+
+</head>
+<body>
+
+    <h1 style="font-family: fancy; font-size: 45px;">Clientes</h1>
+
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="topo">
+                
+        <form method="GET">
+            <input
+                style="padding: 10px; border-radius: 5px;"
+                type="text"
+                name="busca"
+                placeholder="Buscar Cliente">
+
+            <button type="submit" class="btn buscar">🔍</button>
+            <a href="/adicionar_cliente" class="btn adicionar">Novo Cliente</a>
+            <a href="/" class="btn voltar">Voltar</a>
+            <a href="/logout" class="btn excluir">Sair</a>        
+        </form>
+
+    </div>
+
+    <div class="lista-clientes">
+
+        <div class="cabecalho-clientes" >
+            <div>Nome</div>
+            <div>Telefone</div>
+            <div>Opções</div>
+        </div>
+    
+        {% for cliente in clientes %}
+        <div class="linha-clientes">
+
+            <div class="nome-cliente">{{ cliente[1] }}</div>
+            <div class="telefone-cliente">{{ cliente[2] }}</div>
+            
+            <div class="opcoes-clientes">
+                <a href="/editar_cliente/{{ cliente[0] }}" class = "btn editar">Editar</a>
+                <a href="/deletar_cliente/{{ cliente[0] }}" class = "btn excluir" onclick="return confirm('Tem certeza que deseja deletar este cliente?')">Deletar</a>
+            </div>
+        
+        </div>
+
+        {% endfor %}
+    </div>
+    
+
+</body>
+</html>
