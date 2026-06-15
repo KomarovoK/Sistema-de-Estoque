@@ -184,8 +184,6 @@ def cadastro():
 
     return render_template('cadastro.html')
 
-
-<<<<<<< HEAD
 @app.route('/adicionar_cliente', methods=['GET', 'POST'])
 def adicionar_cliente():
     if 'usuario' not in session:
@@ -279,7 +277,5 @@ def editar_cliente(id_cliente):
         cliente=dados_cliente
     )
 
-=======
->>>>>>> 706187505724c597f57d724b3235a82defe56258
 if __name__ == '__main__':
     app.run(debug=True)
