@@ -51,16 +51,19 @@
         <div class="linha-clientes">
 
             <div class="nome-cliente">{{ cliente[1] }}</div>
+            
             <div class="telefone-cliente">{{ cliente[2] }}</div>
             
             <div class="opcoes-clientes">
                 <a href="/editar_cliente/{{ cliente[0] }}" class = "btn editar">Editar</a>
+                <a href="/pedido_cliente/{{ cliente[0] }}" class="btn clientes">Pedidos</a>
                 <a href="/deletar_cliente/{{ cliente[0] }}" class = "btn excluir" onclick="return confirm('Tem certeza que deseja deletar este cliente?')">Deletar</a>
             </div>
         
         </div>
 
         {% endfor %}
+
     </div>
     
 

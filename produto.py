@@ -22,7 +22,6 @@ class Produto:
         self.quantidade = quantidade
 
     def cadastrar_produtos(self):
-
         cursor.execute(
         'SELECT * FROM produtos WHERE nome = ?',
         (self.nome,)
@@ -63,7 +62,6 @@ class Produto:
 
 
     def editar_produto(self, id_produto):
-
         cursor.execute(
         '''
         UPDATE produtos
@@ -90,7 +88,6 @@ class Produto:
 
 
 def validar_produto():
-
     nome = request.form['nome'].strip()
 
     if not nome:

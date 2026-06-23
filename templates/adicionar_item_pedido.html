@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <title>Adicionar Pedido</title>
+
+</head>
+<body>
+
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% if mensagens %}
+            {% for categoria, mensagem in mensagens %}
+                <p class="{{ categoria }}">{{ mensagem }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h1>Adicionar Produto ao Pedido</h1>
+
+    <div class="topo" style="margin-top: 120px;">
+
+        <form method="POST">
+
+            <select
+                name="produto_id"
+                style="padding: 8px; border-radius: 5px; width: 250px;"
+                required
+            >
+                {% for produto in produtos %}
+                <option value="{{ produto[0] }}">
+                    {{ produto[1] }} - R$ {{ produto[2] }} - Estoque: {{ produto[3] }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <br><br>
+
+            <input
+                style="padding: 8px; border-radius: 5px; width: 230px;"
+                type="number"
+                name="quantidade"
+                placeholder="Quantidade"
+                min="1"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit" class="btn adicionar">Adicionar</button>
+            <a href="/pedido_cliente/{{ cliente_id }}" class="btn voltar">Voltar</a>
+
+        </form>
+
+    </div>
+</body>
+</html>

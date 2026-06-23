@@ -2,6 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, flash, session
 from produto import Produto, validar_produto
 from cliente import Cliente
+from pedidos import Pedido
 import sqlite3
 
 app = Flask(__name__)
@@ -10,7 +11,6 @@ app.secret_key = '123'
 
 @app.route('/')
 def index():
-
     if 'usuario' not in session:
         return redirect('/login')
 
@@ -39,7 +39,6 @@ def index():
 
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
-    
     if 'usuario' not in session:
         return redirect('/login')
 
@@ -66,7 +65,6 @@ def adicionar():
 
 @app.route('/deletar/<int:id>')
 def deletar(id):
-
     produto = Produto('', 0, 0)
 
     produto.deletar_produto(id)
@@ -77,7 +75,6 @@ def deletar(id):
 
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
-
     conexao = sqlite3.connect("database.db")
     cursor = conexao.cursor()
 
@@ -147,7 +144,6 @@ def login():
 
 @app.route('/logout')
 def logout():
-    
     session.pop('usuario', None)
     
     return redirect('/login')
@@ -208,7 +204,6 @@ def adicionar_cliente():
 
 @app.route('/clientes')
 def clientes():
-
     if 'usuario' not in session:
         return redirect('/login')
 
@@ -236,7 +231,6 @@ def clientes():
 
 @app.route('/deletar_cliente/<int:id_cliente>')
 def deletar_cliente(id_cliente):
-
     if 'usuario' not in session:
         return redirect('/login')
 
@@ -250,7 +244,6 @@ def deletar_cliente(id_cliente):
 
 @app.route('/editar_cliente/<int:id_cliente>', methods=['GET', 'POST'])
 def editar_cliente(id_cliente):
-
     if 'usuario' not in session:
         return redirect('/login')
 
@@ -276,6 +269,148 @@ def editar_cliente(id_cliente):
         'editar_cliente.html',
         cliente=dados_cliente
     )
+
+@app.route('/pedido_cliente/<int:id_cliente>')
+def pedido_cliente(id_cliente):
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    cliente = Cliente('', '')
+    dados_cliente = cliente.buscar_cliente(id_cliente)
+
+    pedido = Pedido(id_cliente)
+
+    pedido_existente = pedido.buscar_pedido_cliente(id_cliente)
+
+    if pedido_existente is None:
+        pedido_id = pedido.criar_pedido()   
+        status = 'aberto'
+    else:
+        pedido_id = pedido_existente[0]
+        status = pedido_existente[1]
+
+    itens = pedido.listar_itens(pedido_id)
+
+    return render_template(
+        'pedido_cliente.html',
+        cliente=dados_cliente,
+        itens=itens,
+        pedido_id=pedido_id,
+        status=status
+    )
+
+@app.route('/adicionar_item_pedido/<int:pedido_id>', methods=['GET', 'POST'])
+def adicionar_item_pedido(pedido_id):
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    pedido = Pedido(0)
+
+    if request.method == 'POST':
+
+        produto_id = int(request.form['produto_id'])
+        quantidade = int(request.form['quantidade'])
+
+        estoque = pedido.verificar_estoque(produto_id)
+
+        if quantidade > estoque:
+
+            flash('Quantidade maior que o estoque!', 'erro')
+
+            return redirect(f'/adicionar_item_pedido/{pedido_id}')
+
+        pedido.adicionar_item_pedido(
+            pedido_id,
+            produto_id,
+            quantidade
+        )   
+
+        cliente_id = pedido.buscar_cliente_pedido(pedido_id)
+
+        flash('Produto adicionado ao pedido!', 'certo')
+
+        return redirect(f'/pedido_cliente/{cliente_id}')
+
+    produtos = pedido.listar_produtos_disponiveis()
+
+    cliente_id = pedido.buscar_cliente_pedido(pedido_id)
+
+    return render_template(
+        'adicionar_item_pedido.html',
+        produtos=produtos,
+        cliente_id=cliente_id
+    )
+
+@app.route('/excluir_item/<int:item_id>')
+def excluir_item(item_id):
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    pedido = Pedido(0)
+
+    sucesso = pedido.excluir_item_pedido(item_id)
+
+    if sucesso:
+        flash('Item removido do pedido!', 'certo')
+    else:
+        flash('Item não encontrado!', 'erro')
+
+    return redirect(request.referrer or '/')
+
+@app.route('/itens/editar/<int:item_id>', methods=['GET', 'POST'])
+def editar_item(item_id):
+
+    pedido = Pedido(0)
+
+    item = pedido.buscar_item(item_id)
+
+    if not item:
+        flash('Item não encontrado!', 'erro')
+        return redirect(request.referrer or '/')
+
+    pedido_id = item[4]
+    cliente_id = pedido.buscar_cliente_pedido(pedido_id)
+
+    if request.method == 'POST':
+
+        nova_quantidade = int(request.form['quantidade'])
+
+        sucesso = pedido.editar_item(item_id, nova_quantidade)
+
+        if sucesso:
+            flash('Item atualizado com sucesso!', 'certo')
+        else:
+            flash('Erro: estoque insuficiente ou item inválido.', 'erro')
+
+        return redirect(f'/pedido_cliente/{cliente_id}')
+
+    return render_template(
+        'editar_item.html',
+        item=item,
+        cliente_id=cliente_id
+    )
+
+
+@app.route('/finalizar_pedido/<int:pedido_id>')
+def finalizar_pedido(pedido_id):
+
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    pedido = Pedido(0)
+
+    sucesso = pedido.finalizar_pedido(pedido_id)
+
+    if not sucesso:
+        flash('Erro: estoque insuficiente para finalizar o pedido!', 'erro')
+        return redirect(request.referrer or '/')
+
+    cliente_id = pedido.buscar_cliente_pedido(pedido_id)
+
+    flash('Pedido finalizado e estoque atualizado!', 'certo')
+
+    return redirect(f'/pedido_cliente/{cliente_id}')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

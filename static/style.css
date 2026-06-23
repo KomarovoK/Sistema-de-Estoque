@@ -94,7 +94,7 @@ h1 {
 .cabecalho-produtos {
     background-color: #2c3e50;
     color: white;
-    border-radius: 8px;
+    border-radius: 0px;
     font-weight: bold;
     text-align: center;
 }
@@ -176,15 +176,16 @@ h1 {
 .cabecalho-clientes,
 .linha-clientes {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-columns: 2fr 2fr 1.5fr;
     gap: 0;
     align-items: center;
+    border-bottom: 2px solid gray;
 }
 
 .cabecalho-clientes {
     background-color: #2c3e50;
     color: white;
-    border-radius: 8px;
+    border-radius: 0px;
     font-weight: bold;
     text-align: center;
 }
